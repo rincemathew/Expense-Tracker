@@ -15,6 +15,32 @@ const dummyTransactions = [
 
 let transactions = dummyTransactions;
 
+function addTransaction(e) {
+  e.preventDefault();
+  if (form_expense.value.trim() ==='' || amount.value.trim() === ''){
+    alert('Please add a text and amound')
+  } else {
+    const transaction = {
+      id: generateID(),
+      text: form_expense.value,
+      amount: +amount.value
+    };
+    console.log(transaction)
+    transactions.push(transaction);
+    addTransactionDOM(transaction);
+    updateValues();
+    form_expense.value = '';
+    amount.value = '';
+  }
+
+}
+
+
+function generateID() {
+  return Math.floor(Math.random() * 100000000)
+}
+
+
 function addTransactionDOM(transaction) {
     const sign = transaction.amount < 0 ? '-' : '+';
   
@@ -46,6 +72,12 @@ function updateValues() {
 }
 
 
+function removeTransaction(id) {
+  transactions = transactions.filter(transaction => transaction.id !== id);
+  init()
+}
+
+
 function init() {
     list.innerHTML = '';
   
@@ -54,4 +86,6 @@ function init() {
   }
   
 init();
+
+form.addEventListener('submit', addTransaction)
 
